@@ -5,13 +5,16 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import axios from "axios"
 
+import MainLayout from './layouts/MainLayout';
 import Home from './components/home';
 import Collections from './components/collections';
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-  <Route path='/' element={<Collections/>}>
+  <Route path='/' element={<MainLayout/>}>
+  <Route index element={<Collections/>}/>
+  <Route path='/home' element={<Home/>}/>
   </Route>
   )
 );
