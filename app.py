@@ -1,24 +1,3 @@
-# from flask import Flask, render_template
-
-# app = Flask(__name__)
-
-# # homepage when nothing follows the "/":
-# @app.route("/")
-# def home():
-#     return render_template("home.html")
-
-# # alternate route ("http://localhost:5000/salvador"): 
-# @app.route("/about")
-# def about():
-#     return render_template("about.html")
-
-# @app.route("/react")
-# def react():
-#     return render_template("react.html")
-    
-# if __name__ == "__main__":
-#     app.run(debug=True)
-
 from flask import Flask, render_template, request, send_file, redirect, url_for
 import os
 from PIL import Image
