@@ -1,0 +1,11 @@
+__pycache__/
+node_modules/
+dist/
+venv/
+.cache/
+secret*
+.env
+venv/
+.parcel-cache/
+
+tester*
