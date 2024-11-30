@@ -21,7 +21,7 @@ const Collections = () => {
   }, []);
 
   return (
-    <div className="container mx-auto max-w-[400px]">
+    <div className="container mx-auto max-w-[200px]">
       {/* <h1 className="text-2xl font-bold mb-4">Completed Squares</h1> */}
       <div 
         style={{
@@ -49,8 +49,8 @@ const Collections = () => {
               ) : (
                 <div 
                   style={{
-                    width: '100%',
-                    height: '100%',
+                    width: '200px',
+                    height: '200px',
                     backgroundColor: '#f0f0f0'
                   }}
                 />

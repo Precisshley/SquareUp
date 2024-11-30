@@ -7,13 +7,14 @@ import axios from "axios"
 import MainLayout from './layouts/MainLayout';
 import Home from './components/home';
 import Collections from './components/collections';
-
+import Square from './components/square';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
   <Route path='/' element={<MainLayout/>}>
   <Route index element={<Collections/>}/>
   <Route path='/home' element={<Home/>}/>
+  <Route path='/image' element={<Square/>}/>
   </Route>
   )
 );
