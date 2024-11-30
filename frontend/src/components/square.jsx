@@ -18,7 +18,6 @@ const Square = () => {
 
   useEffect(() => {
     const fetchSquareData = async () => {
-      // Prevent double fetching
       if (hasFetched.current) return;
       hasFetched.current = true;
 
@@ -27,10 +26,9 @@ const Square = () => {
         const response = await axios.get('http://localhost:8080/qrcode');
         console.log('Response:', response.data);
         
-        const { position, piece_path, uploaded_path } = response.data;
+        const { position, piece_path } = response.data;
         setPosition(position);
         setPiecePath(piece_path);
-        setUploadedImagePath(uploaded_path);
       } catch (error) {
         console.error('Error fetching square data:', error);
         setError(error.message);
@@ -41,7 +39,7 @@ const Square = () => {
     };
 
     fetchSquareData();
-  }, []); // Empty dependency array to run only once
+  }, []); 
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -61,7 +59,8 @@ const Square = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      // Reload the page to start fresh
+      // Clear the uploaded image path before reload
+      setUploadedImagePath(null);
       window.location.reload();
     } catch (error) {
       console.error('Error resetting game:', error);
@@ -79,14 +78,27 @@ const Square = () => {
     formData.append('file', file);
 
     try {
-      await axios.post('http://localhost:8080/qrcode', formData, {
+      const response = await axios.post('http://localhost:8080/qrcode', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('Upload response:', response.data);
+      
+      if (response.data.success) {
+        // Extract row and column from position state
+        // position format is like "Position: Row 1, Column 1"
+        const positionMatch = position.match(/Row (\d+), Column (\d+)/);
+        if (positionMatch) {
+          const row = parseInt(positionMatch[1]) - 1; // Subtract 1 since display is 1-based but filename is 0-based
+          const col = parseInt(positionMatch[2]) - 1;
+          const imagePath = `square_${row}_${col}.png`;
+          setUploadedImagePath(imagePath);
+          console.log('Set uploaded image path to:', imagePath);
+        }
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
-      // Check if all pieces have been served
       if (error.response?.data?.error === 'all_pieces_served') {
         setNeedsReset(true);
       }
@@ -149,7 +161,7 @@ const Square = () => {
         <>
           <h2>Your Uploaded Version:</h2>
           <img
-            src={`http://localhost:8080/image/${uploadedImagePath}`}
+            src={`http://localhost:8080/image/${uploadedImagePath}?t=${Date.now()}`}
             alt="Your uploaded version"
             className="piece-image"
           />
