@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Your Piece</title>
+</head>
+<body>
+    <h1>Upload Your Piece</h1>
+    <p>This is your image piece: {{ piece_name }}</p>
+    
+    <form action="{{ url_for('piece_page', i=i, j=j) }}" method="post" enctype="multipart/form-data">
+        <label for="file">Upload your version of this piece:</label>
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <br><br>
+    <a href="{{ url_for('live_composite') }}">See the live composite image</a>
+</body>
+</html>

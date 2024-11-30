@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image</title>
+    <title>Upload Your Image</title>
 </head>
 <body>
-    <h1>Upload an Image</h1>
+    <h1>Upload an Image to Start the Collaboration</h1>
+    <p>Please upload the image that will be split into pieces for everyone to work on.</p>
+
+    <!-- Upload form -->
     <form action="/" method="post" enctype="multipart/form-data">
+        <label for="file">Select an image to upload:</label>
         <input type="file" name="file" accept="image/*" required>
-        <button type="submit">Upload</button>
+        <br><br>
+        <button type="submit">Upload Image</button>
     </form>
+
+    <br><br>
+    <p>Once the image is uploaded, you will be able to see the QR code to scan and submit pieces!</p>
+
+    <p><a href="/composite">See Live Composite Image</a></p>
 </body>
 </html>
+
