@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Square</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .piece-image {
+            max-width: 300px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Square</h1>
+        <p>{{ position }}</p>
+        
+        <h2>Reference Image:</h2>
+        <img src="{{ url_for('serve_piece_image', piece_name=piece_path) }}" alt="Your piece" class="piece-image">
+        
+        {% if uploaded_image_path %}
+        <h2>Your Uploaded Version:</h2>
+        <img src="{{ url_for('serve_uploaded_image', piece_name=uploaded_image_path) }}" alt="Your uploaded version" class="piece-image">
+        {% endif %}
+        
+        <h2>Upload Your Version:</h2>
+        <form action="{{ url_for('serve_piece', piece_name=piece_path) }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html> 

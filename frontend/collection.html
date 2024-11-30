@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Collection</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .grid-item {
+            aspect-ratio: 1;
+            width: 100%;
+            object-fit: cover;
+        }
+        .empty-cell {
+            background-color: #f0f0f0;
+            aspect-ratio: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Completed Squares</h1>
+    <div class="grid-container">
+        {% for row in grid %}
+            {% for item in row %}
+                {% if item %}
+                    <img src="{{ url_for('get_image', filename=item['Key'].replace('uploads/', '')) }}" class="grid-item" alt="Square">
+                {% else %}
+                    <div class="empty-cell"></div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+</html>
