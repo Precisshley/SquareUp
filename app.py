@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file, redirect, url_for, jsonify
 from flask_cors import CORS
 
 
@@ -130,7 +130,6 @@ def list():
     # Organize the images into a 3x3 grid
     grid = [[None for _ in range(3)] for _ in range(3)]
     for item in contents:
-        print(item)
         filename = item['Key']  # Get the filename from the S3 object
         if filename.startswith('uploads/square_'):
             # Parse row and column from filename
@@ -140,7 +139,7 @@ def list():
                 col = int(parts[2].split('.')[0])
                 grid[row][col] = item  # Store the entire item object
     
-    return render_template('collection.html', grid=grid)
+    return jsonify({'grid': grid})  # Return JSON instead of rendering template
 
 @app.route('/piece/<piece_name>')
 def serve_piece_image(piece_name):
