@@ -160,12 +160,12 @@ const Square = () => {
       <div className="max-w-2xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-lg p-8 space-y-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Let's Square Up!</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">Let&apos;s Square Up!</h1>
           </div>
 
           {piecePath && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Here's your piece of the puzzle:</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">Here&apos;s your piece of the puzzle:</h2>
               <div className="border rounded-lg p-2 bg-gray-50">
                 <img
                   src={`http://localhost:8080/piece/${piecePath}`}
@@ -181,7 +181,7 @@ const Square = () => {
           )}
 
           <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Now it's your turn! Recreate this image in your style:</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Now it&apos;s your turn! Recreate this image in your style:</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
               {!showConfirm ? (
                 <input 

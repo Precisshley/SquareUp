@@ -50,7 +50,7 @@ const Home = () => {
         </h1>
             {/* Upload form */}
             <p className="text-lg text-gray-600 text-center mb-8">
-            Upload an image and select the number of pieces to split it into. Your guests will get a QR code to replace a random piece with their own image, and together you'll create a unique mosaic!
+            Upload an image and select the number of pieces to split it into. Your guests will get a QR code to replace a random piece with their own image, and together you&apos;ll create a unique mosaic!
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">

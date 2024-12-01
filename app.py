@@ -132,67 +132,46 @@ def serve_piece():
         if 'file' in request.files:
             f = request.files['file']
             if f:
-                # Get the current piece index from the length of served_pieces
-                current_piece = len(served_pieces) - 1 if served_pieces else 0
+                # Get the last served piece name and extract its position
+                if not served_pieces:
+                    return jsonify({'error': 'No piece has been served yet'}), 400
                 
-                # Ensure current_piece is not negative
-                if current_piece < 0:
-                    return jsonify({'error': 'Invalid piece index'}), 400
+                last_piece = served_pieces[-1]
+                # Extract row and col from the piece name (format: piece_row_col.png)
+                row_col = last_piece.replace('piece_', '').replace('.png', '').split('_')
+                row = int(row_col[0])
+                col = int(row_col[1])
                 
-                # Calculate row and column based on grid_size
-                filename = f"square_{current_piece//grid_size}_{current_piece%grid_size}.png"
+                print(f"Uploading piece for position: {row}_{col}")
+                filename = f"square_{row}_{col}.png"
+                
                 f.save(os.path.join(UPLOADS_FOLDER, filename))
                 upload_file(f"uploads/{filename}", BUCKET)
-                
-                # Fetch updated grid data
-                contents = show_image(BUCKET)
-                grid = [[None for _ in range(grid_size)] for _ in range(grid_size)]
-                for item in contents:
-                    filename = item['Key']
-                    if filename.startswith('uploads/square_'):
-                        try:
-                            parts = filename.split('_')
-                            if len(parts) >= 3:
-                                row = int(parts[1])
-                                col = int(parts[2].split('.')[0])
-                                if 0 <= row < grid_size and 0 <= col < grid_size:
-                                    serializable_item = {
-                                        'Key': item['Key'],
-                                        'LastModified': item['LastModified'].isoformat(),
-                                        'ETag': item['ETag'],
-                                        'Size': item['Size'],
-                                        'StorageClass': item['StorageClass']
-                                    }
-                                    grid[row][col] = serializable_item
-                        except (IndexError, ValueError) as e:
-                            continue
-                
-                # Emit update to all clients except sender
-                sid = request.sid if hasattr(request, 'sid') else None
-                socketio.emit('grid_update', {'grid': grid}, skip_sid=sid)
                 
                 return jsonify({'success': True})
     
     # For GET requests, serve the next piece
-    if len(served_pieces) >= grid_size * grid_size:  # Updated condition for grid size
+    if len(served_pieces) >= grid_size * grid_size:
         return jsonify({
             'error': 'all_pieces_served',
             'message': "All pieces have been served! Please upload a new image to start over."
         }), 400
-        
-    # Add the piece name to served_pieces before returning it
+    
     current_piece = len(served_pieces)
-    # Calculate row and column based on grid_size
-    piece_name = f"piece_{current_piece//grid_size}_{current_piece%grid_size}.png"
+    row = current_piece // grid_size
+    col = current_piece % grid_size
+    print(f"GET request - Serving piece at position: {row}_{col}")
+    
+    piece_name = f"piece_{row}_{col}.png"
     served_pieces.append(piece_name)
     
-    position = f"Position: Row {current_piece//grid_size + 1}, Column {current_piece%grid_size + 1}"
+    position = f"Position: Row {row + 1}, Column {col + 1}"
     
     return jsonify({
         'piece_path': piece_name,
         'position': position,
-        'uploaded_path': f"square_{current_piece//grid_size}_{current_piece%grid_size}.png" 
-        if os.path.exists(os.path.join(PIECES_FOLDER, f"square_{current_piece//grid_size}_{current_piece%grid_size}.png")) 
+        'uploaded_path': f"square_{row}_{col}.png" 
+        if os.path.exists(os.path.join(PIECES_FOLDER, f"square_{row}_{col}.png")) 
         else None
     })
 

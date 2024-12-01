@@ -137,7 +137,7 @@ const Collections = () => {
           </button>
         </div>
 
-        <div className="relative mx-auto my-8">
+        <div className="relative mx-8 my-12">
           <div className="absolute -inset-4 bg-gradient-to-br from-amber-800/90 to-amber-950 rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.4)]" />
           <div className="absolute -inset-[18px] bg-gradient-to-br from-amber-700 to-amber-900 rounded-lg opacity-75 blur-[2px]" />
           <div className="absolute -inset-4 bg-[url('/wood-texture.jpg')] bg-repeat opacity-100 mix-blend-overlay rounded-lg" />
