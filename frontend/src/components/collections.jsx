@@ -172,7 +172,7 @@ const Collections = () => {
                         </div>
                       }>
                         <LazyImage
-                          src={`http://localhost:8080/image/${item.Key.replace('uploads/', '')}?v=${version}`}
+                          src={`${import.meta.env.VITE_API_URL}/image/${item.Key.replace('uploads/', '')}?v=${version}`}
                           alt={`Community piece ${rowIndex}-${colIndex}`}
                           className="w-full h-full object-cover rounded-[1px]"
                         />
