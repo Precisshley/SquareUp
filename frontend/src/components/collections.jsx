@@ -136,8 +136,15 @@ const Collections = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="grid grid-cols-3 gap-2 md:gap-3">
+      <div className="relative mx-8 my-12">
+        <div className="absolute -inset-4 bg-amber-900/20 blur-md" />
+        <div className="absolute -inset-4 bg-gradient-to-br from-amber-800 to-amber-950 rounded-lg shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)]" />
+        <div className="absolute -inset-2 border-2 border-amber-950/30 rounded-sm" />
+        <div className="absolute -inset-4 bg-[url('/wood-texture.png')] opacity-30 mix-blend-overlay rounded-lg" />
+        <div className="absolute -inset-1 border border-amber-100/10 rounded-sm" />
+        <div className="absolute -inset-4 translate-y-1 -z-10 bg-black/20 blur-md" />
+
+        <div className="grid grid-cols-3 relative z-10">
           {grid.map((row, rowIndex) => 
             row.map((item, colIndex) => (
               <div 
@@ -146,18 +153,18 @@ const Collections = () => {
               >
                 {item ? (
                   <Suspense fallback={
-                    <div className="w-full h-full bg-gray-100 rounded-md flex items-center justify-center">
-                      <div className="animate-pulse bg-gray-200 w-full h-full rounded-md" />
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                      <div className="animate-pulse bg-gray-200 w-full h-full" />
                     </div>
                   }>
                     <LazyImage
                       src={`http://localhost:8080/image/${item.Key.replace('uploads/', '')}?v=${version}`}
                       alt={`Community piece ${rowIndex}-${colIndex}`}
-                      className="w-full h-full object-cover rounded-md shadow-sm"
+                      className="w-full h-full object-cover"
                     />
                   </Suspense>
                 ) : (
-                  <div className="w-full h-full bg-gray-100 rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center">
+                  <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
                     <span className="text-gray-400 text-sm">Awaiting contribution</span>
                   </div>
                 )}
