@@ -35,6 +35,7 @@ const Collections = () => {
   const [grid, setGrid] = useState(Array(3).fill(null).map(() => Array(3).fill(null)));
   const [version, setVersion] = useState(Date.now());
   const [isConnected, setIsConnected] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -98,11 +99,41 @@ const Collections = () => {
     };
   }, []); // Empty dependency array
 
+  const handleDownloadCombined = async () => {
+    try {
+      setIsDownloading(true);
+      const response = await axios.get('http://localhost:8080/combined-image', {
+        responseType: 'blob',
+        withCredentials: true
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'community-mosaic.png');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading combined image:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Our Community Mosaic</h1>
         <p className="text-gray-600">A picture is worth a thousand words.</p>
+        <button
+          onClick={handleDownloadCombined}
+          disabled={isDownloading}
+          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 disabled:bg-blue-300"
+        >
+          {isDownloading ? 'Downloading...' : 'Download Combined Image'}
+        </button>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6">
