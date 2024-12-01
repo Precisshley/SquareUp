@@ -25,7 +25,7 @@ const Square = () => {
 
       try {
         console.log('Fetching square data...');
-        const response = await axios.get('http://localhost:8080/qrcode');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/qrcode`);
         console.log('Response:', response.data);
         
         const { position, piece_path } = response.data;
@@ -67,7 +67,7 @@ const Square = () => {
     formData.append('file', file);
 
     try {
-      await axios.post('http://localhost:8080/reset', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/reset`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -91,7 +91,7 @@ const Square = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8080/qrcode', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/qrcode`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -168,7 +168,7 @@ const Square = () => {
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Here&apos;s your piece of the puzzle:</h2>
               <div className="border rounded-lg p-2 bg-gray-50">
                 <img
-                  src={`http://localhost:8080/piece/${piecePath}`}
+                  src={`${import.meta.env.VITE_API_URL}/piece/${piecePath}`}
                   alt="Your piece"
                   className="max-h-96 mx-auto object-contain"
                   onError={(e) => {

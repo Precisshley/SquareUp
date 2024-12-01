@@ -18,7 +18,7 @@ const Home = () => {
     try {
       console.log('Sending grid size:', gridSize);
       
-      const response = await axios.post('http://localhost:8080/', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -116,7 +116,7 @@ const Home = () => {
             </h2>
             <div className="p-4 bg-white rounded-lg">
               <img 
-                src="http://localhost:8080/generate_qr" 
+                src={`${import.meta.env.VITE_API_URL}/generate_qr`}
                 alt="QR Code"
                 className="w-64 h-64"
               />

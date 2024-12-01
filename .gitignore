@@ -5,6 +5,7 @@ venv/
 .cache/
 secret*
 .env
+.env.production
 venv/
 .parcel-cache/
 

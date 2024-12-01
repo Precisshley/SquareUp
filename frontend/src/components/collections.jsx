@@ -14,7 +14,7 @@ const initSocket = () => {
     socket = null;
   }
 
-  socket = io('http://localhost:8080', {
+  socket = io(import.meta.env.VITE_API_URL, {
     withCredentials: true,
     transports: ['websocket'],
     reconnection: true,
@@ -40,7 +40,7 @@ const Collections = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/pics');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/pics`);
         if (response.data.grid) {
           setGrid(response.data.grid);
           setVersion(Date.now());
@@ -102,7 +102,7 @@ const Collections = () => {
   const handleDownloadCombined = async () => {
     try {
       setIsDownloading(true);
-      const response = await axios.get('http://localhost:8080/combined-image', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/combined-image`, {
         responseType: 'blob',
         withCredentials: true
       });
