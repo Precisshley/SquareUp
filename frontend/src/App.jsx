@@ -8,6 +8,7 @@ import MainLayout from './layouts/MainLayout';
 import Home from './components/home';
 import Collections from './components/collections';
 import Square from './components/square';
+import NotFoundPage from './components/NotFound';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
   <Route index element={<Collections/>}/>
   <Route path='/home' element={<Home/>}/>
   <Route path='/image' element={<Square/>}/>
+  <Route path='*' element={<NotFoundPage/>}/>
   </Route>
   )
 );
