@@ -64,12 +64,6 @@ We wanted to encorporate the digital and physical world to inspire groups to hav
 
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Fill later
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
