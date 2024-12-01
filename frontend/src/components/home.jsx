@@ -8,19 +8,24 @@ const Home = () => {
   const [gridSize, setGridSize] = useState(null);
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     setIsLoading(true);
 
     const formData = new FormData();
     formData.append('file', event.target.file.files[0]);
-    formData.append('gridSize', gridSize); // Send the selected grid size to the backend
+    formData.append('gridSize', gridSize);
 
     try {
-      await axios.post('http://localhost:8080/', formData, {
+      console.log('Sending grid size:', gridSize);
+      
+      const response = await axios.post('http://localhost:8080/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      
+      console.log('Server response:', response);
+      
       setShowQR(true);
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -109,7 +114,7 @@ const Home = () => {
             <h2 className="text-xl font-semibold text-gray-800">
               Scan QR Code to Start Contributing!
             </h2>
-            <div className="p-4 bg-white rounded-lg shadow">
+            <div className="p-4 bg-white rounded-lg">
               <img 
                 src="http://localhost:8080/generate_qr" 
                 alt="QR Code"
@@ -130,7 +135,7 @@ const Home = () => {
 
         <div className="mt-4 text-center">
           <a
-            href="/composite"
+            href="/"
             className="text-blue-500 hover:text-blue-700 font-medium"
           >
             See Live Composite Image

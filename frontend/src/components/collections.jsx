@@ -32,7 +32,7 @@ const initSocket = () => {
 const LazyImage = lazy(() => import('./LazyImage'));
 
 const Collections = () => {
-  const [grid, setGrid] = useState(Array(3).fill(null).map(() => Array(3).fill(null)));
+  const [grid, setGrid] = useState([]);
   const [version, setVersion] = useState(Date.now());
   const [isConnected, setIsConnected] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -123,60 +123,76 @@ const Collections = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Our Community Mosaic</h1>
-        <p className="text-gray-600">A picture is worth a thousand words.</p>
-        <button
-          onClick={handleDownloadCombined}
-          disabled={isDownloading}
-          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 disabled:bg-blue-300"
-        >
-          {isDownloading ? 'Downloading...' : 'Download Combined Image'}
-        </button>
-      </div>
-
-      <div className="relative mx-8 my-12">
-        <div className="absolute -inset-4 bg-amber-900/20 blur-md" />
-        <div className="absolute -inset-4 bg-gradient-to-br from-amber-800 to-amber-950 rounded-lg shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)]" />
-        <div className="absolute -inset-2 border-2 border-amber-950/30 rounded-sm" />
-        <div className="absolute -inset-4 bg-[url('/wood-texture.png')] opacity-30 mix-blend-overlay rounded-lg" />
-        <div className="absolute -inset-1 border border-amber-100/10 rounded-sm" />
-        <div className="absolute -inset-4 translate-y-1 -z-10 bg-black/20 blur-md" />
-
-        <div className="grid grid-cols-3 relative z-10">
-          {grid.map((row, rowIndex) => 
-            row.map((item, colIndex) => (
-              <div 
-                key={`${rowIndex}-${colIndex}-${version}`}
-                className="relative aspect-square transition-transform hover:scale-[1.02] duration-200"
-              >
-                {item ? (
-                  <Suspense fallback={
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                      <div className="animate-pulse bg-gray-200 w-full h-full" />
-                    </div>
-                  }>
-                    <LazyImage
-                      src={`http://localhost:8080/image/${item.Key.replace('uploads/', '')}?v=${version}`}
-                      alt={`Community piece ${rowIndex}-${colIndex}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </Suspense>
-                ) : (
-                  <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Awaiting contribution</span>
-                  </div>
-                )}
-              </div>
-            ))
-          )}
+    <div className="min-h-screen bg-gradient-to-r from-orange-200 to-purple-300 py-8">
+      <div className="container mx-auto px-4 max-w-2xl">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Our Community Mosaic</h1>
+          <p className="text-gray-600">A picture is worth a thousand words.</p>
+          <button
+            onClick={handleDownloadCombined}
+            disabled={isDownloading}
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 disabled:bg-blue-300"
+          >
+            {isDownloading ? 'Downloading...' : 'Download'}
+          </button>
         </div>
-      </div>
 
-      <p className="text-center text-gray-500 text-sm mt-6">
-        Each piece represents a unique contribution from our team members
-      </p>
+        <div className="relative mx-auto my-8">
+          <div className="absolute -inset-4 bg-gradient-to-br from-amber-800/90 to-amber-950 rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.4)]" />
+          <div className="absolute -inset-[18px] bg-gradient-to-br from-amber-700 to-amber-900 rounded-lg opacity-75 blur-[2px]" />
+          <div className="absolute -inset-4 bg-[url('/wood-texture.jpg')] bg-repeat opacity-100 mix-blend-overlay rounded-lg" />
+          <div className="absolute -inset-4 bg-gradient-to-br from-amber-100/10 to-amber-950/30 rounded-lg" />
+          <div className="absolute inset-0 bg-black/5 rounded-sm" />
+          
+          <div className="absolute inset-0 shadow-inner rounded-sm" />
+          <div className="absolute -inset-[1px] border border-amber-100/20 rounded-sm" />
+          <div className="absolute -inset-[2px] border border-amber-950/30 rounded-sm" />
+          
+          <div className="absolute -inset-4 bg-gradient-to-tr from-transparent via-amber-100/10 to-transparent opacity-40" />
+          <div className="absolute -top-4 -right-4 w-20 h-20 bg-amber-100/20 blur-md rounded-full mix-blend-overlay" />
+          
+          <div className="absolute -inset-4 translate-y-2 -z-10 bg-black/20 blur-xl rounded-lg" />
+
+          <div className="relative bg-black/5 rounded-sm p-[1px]">
+            <div className="grid" style={{ 
+              gridTemplateColumns: `repeat(${grid.length}, 1fr)`,
+              gap: '1px',
+              background: 'rgba(0,0,0,0.1)',
+            }}>
+              {grid.map((row, rowIndex) => 
+                row.map((item, colIndex) => (
+                  <div 
+                    key={`${rowIndex}-${colIndex}-${version}`}
+                    className="relative aspect-square transition-transform hover:scale-[1.02] duration-200"
+                  >
+                    {item ? (
+                      <Suspense fallback={
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                          <div className="animate-pulse bg-gray-200 w-full h-full" />
+                        </div>
+                      }>
+                        <LazyImage
+                          src={`http://localhost:8080/image/${item.Key.replace('uploads/', '')}?v=${version}`}
+                          alt={`Community piece ${rowIndex}-${colIndex}`}
+                          className="w-full h-full object-cover rounded-[1px]"
+                        />
+                      </Suspense>
+                    ) : (
+                      <div className="w-full h-full bg-gray-100/90 border border-gray-300/30 flex items-center justify-center rounded-[1px]">
+                        {/* Empty cell styling */}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        <p className="text-center text-gray-500 text-sm mt-6">
+          Each piece represents a unique contribution from our community
+        </p>
+      </div>
     </div>
   );
 };

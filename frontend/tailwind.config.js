@@ -6,13 +6,16 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Roboto', 'sans-serif'],
+      keyframes: {
+        tilt: {
+          '0%, 100%': { transform: 'rotate(-10deg)' },
+          '50%': { transform: 'rotate(10deg)' },
+        }
       },
-      gridTemplateColumns: {
-        '70/30': '70% 28%',
-      },
+      animation: {
+        tilt: 'tilt 2s ease-in-out infinite',
+      }
     },
   },
   plugins: [],
-}
+} 
