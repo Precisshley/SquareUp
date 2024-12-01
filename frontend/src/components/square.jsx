@@ -10,6 +10,8 @@ const Square = () => {
   const [file, setFile] = useState(null);
   const [needsReset, setNeedsReset] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const { id } = useParams();
 
@@ -42,7 +44,18 @@ const Square = () => {
   }, []); 
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+      setShowConfirm(true);
+    }
+  };
+
+  const handleCancel = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setShowConfirm(false);
   };
 
   const handleReset = async (event) => {
@@ -86,16 +99,8 @@ const Square = () => {
       console.log('Upload response:', response.data);
       
       if (response.data.success) {
-        // Extract row and column from position state
-        // position format is like "Position: Row 1, Column 1"
-        const positionMatch = position.match(/Row (\d+), Column (\d+)/);
-        if (positionMatch) {
-          const row = parseInt(positionMatch[1]) - 1; // Subtract 1 since display is 1-based but filename is 0-based
-          const col = parseInt(positionMatch[2]) - 1;
-          const imagePath = `square_${row}_${col}.png`;
-          setUploadedImagePath(imagePath);
-          console.log('Set uploaded image path to:', imagePath);
-        }
+        // Redirect to home page after successful upload
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -107,81 +112,113 @@ const Square = () => {
     }
   };
 
-//   if (!position || !piecePath) {
-//     return <Navigate to="/" replace />;
-//   }
-
   if (needsReset) {
     return (
-      <div className="container">
-        <h1>All Pieces Have Been Served!</h1>
-        <p>Please upload a new image to start over:</p>
-        <form onSubmit={handleReset} encType="multipart/form-data">
-          <input 
-            type="file" 
-            name="file" 
-            accept="image/*" 
-            onChange={handleFileChange} 
-            required 
-            disabled={isLoading}
-          />
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Uploading...' : 'Start New Game'}
-          </button>
-        </form>
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">All Pieces Have Been Served!</h1>
+          <p className="text-gray-600 mb-6">Please upload a new image to start over:</p>
+          <form onSubmit={handleReset} encType="multipart/form-data" className="space-y-4">
+            <input 
+              type="file" 
+              name="file" 
+              accept="image/*" 
+              onChange={handleFileChange} 
+              required 
+              disabled={isLoading}
+              className="block w-full text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition duration-200"
+            />
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-blue-300"
+            >
+              {isLoading ? 'Uploading...' : 'Start New Game'}
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <div className="error">Error: {error}</div>;
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-600">Error: {error}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="container">
-      <h1>Your Square</h1>
-      {position && <p>{position}</p>}
+    <div className="max-w-2xl mx-auto p-6">
+      <div className="bg-white rounded-lg shadow-lg p-8 space-y-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Your Square</h1>
+          {position && <p className="text-gray-600">{position}</p>}
+        </div>
 
-      {piecePath && (
-        <>
-          <h2>Reference Image:</h2>
-          <img
-            src={`http://localhost:8080/piece/${piecePath}`}
-            alt="Your piece"
-            className="piece-image"
-            onError={(e) => {
-              console.error('Error loading image:', e);
-              setError('Failed to load piece image');
-            }}
-          />
-        </>
-      )}
+        {piecePath && (
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Reference Image:</h2>
+            <div className="border rounded-lg p-2 bg-gray-50">
+              <img
+                src={`http://localhost:8080/piece/${piecePath}`}
+                alt="Your piece"
+                className="max-h-96 mx-auto object-contain"
+                onError={(e) => {
+                  console.error('Error loading image:', e);
+                  setError('Failed to load piece image');
+                }}
+              />
+            </div>
+          </div>
+        )}
 
-      {uploadedImagePath && (
-        <>
-          <h2>Your Uploaded Version:</h2>
-          <img
-            src={`http://localhost:8080/image/${uploadedImagePath}?t=${Date.now()}`}
-            alt="Your uploaded version"
-            className="piece-image"
-          />
-        </>
-      )}
-
-      <h2>Upload Your Version:</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input 
-          type="file" 
-          name="file" 
-          accept="image/*" 
-          onChange={handleFileChange} 
-          required 
-          disabled={isLoading}
-        />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Uploading...' : 'Upload'}
-        </button>
-      </form>
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Version:</h2>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            {!showConfirm ? (
+              <input 
+                type="file" 
+                name="file" 
+                accept="image/*" 
+                onChange={handleFileChange} 
+                required 
+                disabled={isLoading}
+                className="block w-full text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition duration-200"
+              />
+            ) : (
+              <div className="space-y-4">
+                <div className="border rounded-lg p-4 bg-gray-50">
+                  <img 
+                    src={previewUrl} 
+                    alt="Preview" 
+                    className="max-h-96 mx-auto object-contain"
+                  />
+                </div>
+                <div className="flex justify-center gap-4">
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 disabled:bg-green-300"
+                  >
+                    {isLoading ? 'Uploading...' : 'Confirm Upload'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="px-6 py-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
