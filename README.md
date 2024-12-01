@@ -62,7 +62,12 @@ We wanted to encorporate the digital and physical world to inspire groups to hav
 
 [![React][React-shield]][react-url] [![Flask][Flask-shield]][flask-url] [![AWS][AWS-shield]][aws-url] [![Python][Python-shield]][python-url] [![Figma][Figma-shield]][figma-url] [![Vite][Vite-shield]][vite-url] [![WebSockets][WebSockets-shield]][websockets-url] [![JavaScript][JavaScript]][js-url] [![HTML5][HTML5]][html-url] [![CSS3][CSS3]][css-url]
 
+## Usage
 
+1. Download dependencies for the server pip3 install -r “requirements.txt”
+2. Start the flask server python app.py
+3. Download packages for the frontend cd frontend npm install
+4. Start the frontend in developer mode npm run dev
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
