@@ -1,7 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider} from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import axios from "axios"
 
 import MainLayout from './layouts/MainLayout';
@@ -9,6 +8,7 @@ import Home from './components/home';
 import Collections from './components/collections';
 import Square from './components/square';
 import NotFoundPage from './components/NotFound';
+import Loading from './components/loading';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +16,7 @@ const router = createBrowserRouter(
   <Route index element={<Collections/>}/>
   <Route path='/home' element={<Home/>}/>
   <Route path='/image' element={<Square/>}/>
+  <Route path='/loading' element={<Loading/>}/>
   <Route path='*' element={<NotFoundPage/>}/>
   </Route>
   )
