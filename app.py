@@ -116,7 +116,7 @@ def upload_image():
 @app.route('/generate_qr')
 def generate_qr_code():
     # Generate the QR code pointing to the frontend /image route
-    frontend_url = "http://localhost:5173/image"  # Adjust port if different
+    frontend_url = "https://square-d2oovhr4u-profilists-projects.vercel.app/image"
     qr = qrcode.make(frontend_url)
     buf = io.BytesIO()
     qr.save(buf)
