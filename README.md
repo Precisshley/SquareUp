@@ -14,7 +14,7 @@
   <p align="center">
     A picture is worth a thousand words, so we took a whole bunch.
     <br />
-    <a href=""><strong>Visit the Demo »</strong></a>
+    <a href="https://square-up-pearl.vercel.app/home"><strong>Visit the Demo »</strong></a>
     <br />
     <br />
   </p>
