@@ -10,9 +10,11 @@
   </a>
 
   <h1 align="center">Square Up</h1>
+  <h2 align="center"> A picture is worth a thousand words, so we took a whole bunch.</h2>
 
   <p align="center">
-    A picture is worth a thousand words, so we took a whole bunch.
+    Built By Ashley Anderson, Daniel He, Sughra Hussain, Larris Xie
+    <br />
     <br />
     <a href="https://square-up-pearl.vercel.app/home"><strong>Visit the Demo »</strong></a>
     <br />
