@@ -41,7 +41,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Square Up was made during Hack Western 11. It's web app that allows groups to make photo mosaics's in a few simple steps:
+Square Up was made during Hack Western 11. It is a web app that allows groups to make photo mosaics's in a few simple steps:
 
 ### What the Host Does:
   1. Uploads an image.
